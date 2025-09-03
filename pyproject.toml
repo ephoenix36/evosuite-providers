@@ -1,0 +1,42 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "evosuite-providers"
+version = "0.2.0"
+description = "LLM / model provider adapters for EvoSuite (OpenAI, Anthropic, Google, local)"
+authors = [{name = "EvoSuite Team"}]
+license = {text = "MIT"}
+requires-python = ">=3.10"
+dependencies = [
+    "evosuite-core>=0.2,<0.3",
+    "httpx>=0.24",
+    "pydantic>=2.0"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov",
+    "pytest-asyncio",
+    "black",
+    "isort",
+    "flake8",
+    "mypy"
+]
+openai = ["openai>=1.0"]
+anthropic = ["anthropic>=0.7"]
+google = ["google-generativeai>=0.3"]
+azure = ["azure-openai"]
+all = ["evosuite-providers[openai,anthropic,google,azure]"]
+
+[project.entry-points."evosuite.plugins"]
+openai_provider = "evosuite_providers.openai:OpenAIProvider"
+anthropic_provider = "evosuite_providers.anthropic:AnthropicProvider"
+google_provider = "evosuite_providers.google:GoogleProvider"
+azure_provider = "evosuite_providers.azure:AzureProvider"
+local_provider = "evosuite_providers.local:LocalProvider"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
